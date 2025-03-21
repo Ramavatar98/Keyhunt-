@@ -21,7 +21,7 @@ jobs:
       - name: Run KeyHunt for 5 Hours 50 Minutes
         run: |
           cd keyhunt-
-          timeout 20990 ./keyhunt -m address -f tests/66.txt -b 66 -l compress -q -s 10 | tee ../keyhunt_output.log
+          timeout 20990 ./keyhunt -m address -f tests/66.txt -r 80000000000000000:fffffffffffffffff -t 8 -k 256 -l compress -q -s 10 | tee ../keyhunt_output.log
 
       - name: Display Key Found
         run: |
