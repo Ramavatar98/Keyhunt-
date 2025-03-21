@@ -25,6 +25,7 @@ jobs:
           timeout 30 ./keyhunt -m address -f tests/66.txt -b 66 -l compress -q -s 10 | tee ../keyhunt_output.log
       - name: Display Key Found
         run: |
+             cd keyhunt-
              cat KEYFOUNDKEYFOUND.txt
          # Check if Key Found
          # if grep -q "Hit! Private Key:" ../keyhunt_output.log; then
