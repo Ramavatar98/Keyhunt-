@@ -2,9 +2,8 @@ name: KeyHunt Automation
 
 on:
   workflow_dispatch:  # Manually Run
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: "50 */6 * * *"  # Runs every 5 hours 50 minutes
 
 jobs:
   run-keyhunt:
@@ -19,37 +18,13 @@ jobs:
           cd keyhunt-
           make legacy
 
-      - name: Run KeyHunt and Check for Private Key
+      - name: Run KeyHunt for 5 Hours 50 Minutes
         run: |
           cd keyhunt-
-          timeout 30 ./keyhunt -m address -f tests/66.txt -b 66 -l compress -q -s 10 | tee ../keyhunt_output.log
-      - name: Display Key Found
-        run: |
-             cd keyhunt-
-             cat KEYFOUNDKEYFOUND.txt
-         # Check if Key Found
-         # if grep -q "Hit! Private Key:" ../keyhunt_output.log; then
-          #echo "Key Found! Saving..."
-            #TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
-            
-            # Extract and Save Key
-           # grep "Hit! Private Key:" ../keyhunt_output.log | while read -r line; do
-             # echo "[$TIMESTAMP] $line" >> found_keys.log
-           # done
-      - name: Display Key Found
-        run: |
-             cat KEYFOUNDKEYFOUND.txt
-             
-         # Git Setup & Commit
-            #git config --global user.name "GitHub Actions"
-            #git config --global user.email "actions@github.com"
-            #git add found_keys.log
-            #git commit -m "New key found on $TIMESTAMP"
-            #git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+          timeout 20990 ./keyhunt -m address -f tests/66.txt -b 66 -l compress -q -s 10 | tee ../keyhunt_output.log
 
-            # Send Email Notification
-            #echo "New Key Found: $(grep 'Hit! Private Key:' ../keyhunt_output.log)" | mail -s "New Key Found!" g98655545@gmail.com
-            
-            # Clean Up
-            #rm ../keyhunt_output.log
-          #fi
+      - name: Display Key Found
+        run: |
+          cd keyhunt-
+          cat KEYFOUNDKEYFOUND.txt || echo "No key found"
+          
